@@ -14,6 +14,7 @@ import { FaFacebookF } from "react-icons/fa";
 import { FaLinkedinIn } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { LightModeOutlined, DarkModeOutlined } from "@mui/icons-material";
+import Social from "@/components/SocialLogin/Social";
 function ModeToggle() {
   const { mode, setMode } = useColorScheme();
   const [mounted, setMounted] = React.useState(false);
@@ -142,13 +143,7 @@ const SignUpPage = () => {
                 >
                   Or Sign Up with
                 </Typography>
-                <div>
-                  <p className="flex justify-center items-center  gap-6">
-                    <FaFacebookF className="bg-gray-300 rounded-full p-3 text-4xl text-[#3B5998]"></FaFacebookF>
-                    <FaLinkedinIn className="bg-gray-300 rounded-full p-3 text-4xl text-[#3B5998]"></FaLinkedinIn>
-                    <FcGoogle className="bg-gray-300 rounded-full p-3 text-4xl"></FcGoogle>
-                  </p>
-                </div>
+                <Social />
                 <Typography
                   endDecorator={
                     <Link className="text-red-900 font-bold" href="/login">

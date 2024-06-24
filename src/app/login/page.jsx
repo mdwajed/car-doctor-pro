@@ -10,10 +10,12 @@ import FormLabel from "@mui/joy/FormLabel";
 import Input from "@mui/joy/Input";
 import Button from "@mui/joy/Button";
 import Link from "@mui/joy/Link";
-import { FaFacebookF } from "react-icons/fa";
-import { FaLinkedinIn } from "react-icons/fa";
-import { FcGoogle } from "react-icons/fc";
+
 import { LightModeOutlined, DarkModeOutlined } from "@mui/icons-material";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import Social from "@/components/SocialLogin/Social";
+
 function ModeToggle() {
   const { mode, setMode } = useColorScheme();
   const [mounted, setMounted] = React.useState(false);
@@ -42,11 +44,24 @@ function ModeToggle() {
     </Button>
   );
 }
-const handleLogIn = (event) => {
-  event.preventDefault();
-  console.log("wajed");
-};
+
 const LoginPage = () => {
+  const router = useRouter();
+  console.log(router);
+  const handleLogIn = async (event) => {
+    event.preventDefault();
+    const email = event.target.email.value;
+    const password = event.target.password.value;
+    const resp = await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    });
+    console.log(resp);
+    event.target.reset();
+
+    router.push("/");
+  };
   return (
     <CssVarsProvider>
       <div className="max-w-7xl mx-auto my-6">
@@ -90,7 +105,7 @@ const LoginPage = () => {
                       // html input attribute
                       name="email"
                       type="email"
-                      placeholder="johndoe@email.com"
+                      placeholder="Your Email"
                     />
                   </FormControl>
                   <FormControl>
@@ -99,7 +114,7 @@ const LoginPage = () => {
                       // html input attribute
                       name="password"
                       type="password"
-                      placeholder="password"
+                      placeholder="Your Password"
                     />
                   </FormControl>
                   <Button
@@ -117,13 +132,7 @@ const LoginPage = () => {
                 >
                   Or Sign In with
                 </Typography>
-                <div>
-                  <p className="flex justify-center items-center  gap-6">
-                    <FaFacebookF className="bg-[#F5F5F8] rounded-full p-3 text-4xl text-[#3B5998]"></FaFacebookF>
-                    <FaLinkedinIn className="bg-[#F5F5F8] rounded-full p-3 text-4xl text-[#3B5998]"></FaLinkedinIn>
-                    <FcGoogle className="bg-[#F5F5F8] rounded-full p-3 text-4xl"></FcGoogle>
-                  </p>
-                </div>
+             <Social/>
                 <Typography
                   endDecorator={
                     <Link className="text-red-900 font-bold" href="/signup">

@@ -9,16 +9,13 @@ import {
 } from "@material-tailwind/react";
 import Link from "next/link";
 import Image from "next/image";
-import {
-  Search,
-  ShoppingBagOutlined,
-  ShoppingBasket,
-  ShoppingBasketOutlined,
-} from "@mui/icons-material";
+import { Search, ShoppingBasketOutlined } from "@mui/icons-material";
+import { signOut, useSession } from "next-auth/react";
 
 const Nabvar = () => {
   const [openNav, setOpenNav] = React.useState(false);
-
+  const session = useSession();
+  console.log(session);
   React.useEffect(() => {
     window.addEventListener(
       "resize",
@@ -88,7 +85,7 @@ const Nabvar = () => {
           <Link href="/">
             <Image src="/assets/logo.svg" alt="logo" width={60} height={20} />
           </Link>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 md:gap-24">
             <div className="mr-4 hidden lg:block">{navList}</div>
             <div className="flex items-center gap-x-3">
               <ShoppingBasketOutlined className="text-black" />
@@ -96,16 +93,27 @@ const Nabvar = () => {
               <Button
                 variant="outlined"
                 color="red"
-                size="lg"
+                size="md"
                 className="hidden lg:inline-block "
               >
                 Appointment
               </Button>
-              <Link href="/login">
-                <Button variant="contained" size="lg" color="red" className="">
-                  <span>Log In</span>
+              {session.data ? (
+                <Button
+                  onClick={() => signOut()}
+                  variant="contained"
+                  size="md"
+                  color="red"
+                >
+                  <span>Log Out</span>
                 </Button>
-              </Link>
+              ) : (
+                <Link href="/login">
+                  <Button variant="contained" size="md" color="red">
+                    <span>Log In</span>
+                  </Button>
+                </Link>
+              )}
             </div>
             <IconButton
               variant="text"
