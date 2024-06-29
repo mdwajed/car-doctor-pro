@@ -1,5 +1,5 @@
-"use client";
-import { Avatar, Typography } from "@material-tailwind/react";
+// "use client";
+import { Typography } from "../../app/MTailwind";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -25,7 +25,7 @@ export default function Footer() {
     <footer className="relative w-full bg-[#151515] py-6">
       <div className="mx-auto w-full px-8">
         <div className="grid grid-cols-1 justify-between gap-4 md:grid-cols-2 text-white">
-          <div>
+          <div className="ml-40 mt-8">
             <Typography variant="h5" className="mb-6 text-white">
               <Link href="/">
                 <Image

@@ -10,11 +10,10 @@ import FormLabel from "@mui/joy/FormLabel";
 import Input from "@mui/joy/Input";
 import Button from "@mui/joy/Button";
 import Link from "@mui/joy/Link";
-import { FaFacebookF } from "react-icons/fa";
-import { FaLinkedinIn } from "react-icons/fa";
-import { FcGoogle } from "react-icons/fc";
 import { LightModeOutlined, DarkModeOutlined } from "@mui/icons-material";
 import Social from "@/components/SocialLogin/Social";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 function ModeToggle() {
   const { mode, setMode } = useColorScheme();
   const [mounted, setMounted] = React.useState(false);
@@ -43,27 +42,29 @@ function ModeToggle() {
     </Button>
   );
 }
-const handleSignUp = async (event) => {
-  event.preventDefault();
-  const newUsers = {
-    name: event.target.name.value,
-    email: event.target.email.value,
-    password: event.target.password.value,
-  };
-  console.log(newUsers);
-  const resp = await fetch("http://localhost:3000/signup/api", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(newUsers),
-  });
-  console.log(resp);
-  if (resp) {
-    event.target.reset();
-  }
-};
+
 const SignUpPage = () => {
+  const router = useRouter();
+  const session = useSession();
+  const handleSignUp = async (event) => {
+    event.preventDefault();
+    const newUsers = {
+      name: event.target.name.value,
+      email: event.target.email.value,
+      password: event.target.password.value,
+    };
+    console.log(newUsers);
+    const resp = await fetch("http://localhost:3000/signup/api", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newUsers),
+    });
+    if (session.status === "authenticated") {
+      router.push("/");
+    }
+  };
   return (
     <CssVarsProvider>
       <div className="max-w-7xl mx-auto my-6">
@@ -97,7 +98,7 @@ const SignUpPage = () => {
               >
                 <div>
                   <Typography level="h4" component="h1">
-                    <b>Welcome ! Sign up to join.</b>
+                    <b className="text-red-900">Welcome ! Sign up to join.</b>
                   </Typography>
                 </div>
                 <form onSubmit={handleSignUp}>

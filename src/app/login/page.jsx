@@ -12,7 +12,7 @@ import Button from "@mui/joy/Button";
 import Link from "@mui/joy/Link";
 
 import { LightModeOutlined, DarkModeOutlined } from "@mui/icons-material";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Social from "@/components/SocialLogin/Social";
 
@@ -47,6 +47,7 @@ function ModeToggle() {
 
 const LoginPage = () => {
   const router = useRouter();
+  const session = useSession();
   console.log(router);
   const handleLogIn = async (event) => {
     event.preventDefault();
@@ -58,9 +59,10 @@ const LoginPage = () => {
       redirect: false,
     });
     console.log(resp);
-    event.target.reset();
-
-    router.push("/");
+    // event.target.reset();
+    if (session.status === "authenticated") {
+      router.push("/");
+    }
   };
   return (
     <CssVarsProvider>
@@ -95,7 +97,7 @@ const LoginPage = () => {
               >
                 <div>
                   <Typography level="h4" component="h1">
-                    <b>Welcome ! Log in to continue.</b>
+                    <b className="text-red-900">Welcome ! Log in to continue.</b>
                   </Typography>
                 </div>
                 <form onSubmit={handleLogIn}>
@@ -132,7 +134,7 @@ const LoginPage = () => {
                 >
                   Or Sign In with
                 </Typography>
-             <Social/>
+                <Social />
                 <Typography
                   endDecorator={
                     <Link className="text-red-900 font-bold" href="/signup">

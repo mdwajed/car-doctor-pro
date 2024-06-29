@@ -18,11 +18,13 @@ const handler = NextAuth({
       async authorize(credentials) {
         const { email, password } = credentials;
         if (!email || !password) {
+          console.error("Email or password not provided");
           return null;
         }
         const db = await connectDB();
         const currentUser = await db.collection("users").findOne({ email });
         if (!currentUser) {
+          console.error("No user found with email:", email);
           return null;
         }
         const passwordMatched = bcrypt.compareSync(
@@ -30,6 +32,7 @@ const handler = NextAuth({
           currentUser.password
         );
         if (!passwordMatched) {
+          console.error("Password does not match for email:", email);
           return null;
         }
         return currentUser;
@@ -44,9 +47,31 @@ const handler = NextAuth({
       clientSecret: process.env.NEXT_PUBLIC_GITHUB_SECRET,
     }),
   ],
-  callbacks: {},
+
   pages: {
     signIn: "/login",
+  },
+  callbacks: {
+    async signIn({ user, account }) {
+      if (account.provider === "google" || account.provider === "github") {
+        const { name, email, image } = user;
+        try {
+          const db = await connectDB();
+          const userCollection = db.collection("users");
+          const userExist = await userCollection.findOne({ email });
+          if (!userExist) {
+            const res = await userCollection.insertOne(user);
+            return user;
+          } else {
+            return user;
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        return user;
+      }
+    },
   },
 });
 

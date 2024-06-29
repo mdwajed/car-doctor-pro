@@ -1,12 +1,10 @@
-"use client";
 import React from "react";
-import { services } from "../../lib/services";
+import { Button } from "../../app/MTailwind";
+import ServiceCard from "../Cards/ServiceCard"
+import { getServices } from "@/services/getServices";
 
-import { Button } from "@material-tailwind/react";
-import ServiceCard from "../Cards/ServiceCard";
-
-const Services = () => {
-  console.log(services);
+const Services = async () => {
+  const { services } = await getServices();
   return (
     <div className="my-12 max-w-7xl mx-auto">
       <div className="text-center mb-8 space-y-4">
@@ -16,11 +14,11 @@ const Services = () => {
           <small>
             the majority have suffered alteration in some form, by injected
             humour, or randomised <br /> words which do not look even slightly
-            believable.{" "}
+            believable.
           </small>
         </p>
       </div>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3  ">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 ">
         {services.map((service) => (
           <ServiceCard key={service._id} service={service}></ServiceCard>
         ))}

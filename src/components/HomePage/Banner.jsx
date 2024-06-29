@@ -1,7 +1,5 @@
-"use client";
 import React from "react";
-import { Carousel } from "@material-tailwind/react";
-import { Button } from "@material-tailwind/react";
+import { Button, Carousel } from "../../app/MTailwind";
 const Banner = () => {
   const banners = [
     {
@@ -68,10 +66,10 @@ const Banner = () => {
                 </h2>
                 <p className="text-sm text-[#FFFFFF]">{banner.description}</p>
                 <div className="gap-4 flex justify-start">
-                  <Button variant="gradient" color="red" size="lg">
+                  <Button variant="gradient" color="red" size="md">
                     Discover More
                   </Button>
-                  <Button variant="outlined" color="red" size="lg">
+                  <Button variant="outlined" color="red" size="md">
                     Latest Projects
                   </Button>
                 </div>

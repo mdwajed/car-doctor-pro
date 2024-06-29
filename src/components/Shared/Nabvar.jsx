@@ -6,7 +6,7 @@ import {
   Typography,
   IconButton,
   Button,
-} from "@material-tailwind/react";
+} from "../../app/MTailwind";
 import Link from "next/link";
 import Image from "next/image";
 import { Search, ShoppingBasketOutlined } from "@mui/icons-material";
