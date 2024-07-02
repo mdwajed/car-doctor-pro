@@ -1,9 +1,10 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
-
+import 'react-toastify/dist/ReactToastify.css';
 import Footer from "@/components/Shared/Footer";
 import Nabvar from "@/components/Shared/Nabvar";
 import AuthProvider from "@/services/AuthProvider";
+import { ToastContainer } from "react-toastify";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,12 +17,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
+      <ToastContainer />
         <AuthProvider>
           <Nabvar />
-
           <div>{children}</div>
-
-          <Footer />
+         <Footer />
         </AuthProvider>
       </body>
     </html>

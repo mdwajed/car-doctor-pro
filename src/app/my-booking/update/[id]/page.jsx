@@ -1,54 +1,50 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import { getServicesDetails } from "@/services/getServices";
-import { Button } from "../../MTailwind";
 import Image from "next/image";
 import Link from "next/link";
+import React, { useEffect, useState } from "react";
+import { Button } from "../../../MTailwind";
 import { Input } from "@mui/joy";
 import { useSession } from "next-auth/react";
-import { toast } from "react-toastify";
-
-const CheckOut = ({ params }) => {
+// import { toast } from "react-toastify";
+const UpdatePage = ({ params }) => {
   const { data } = useSession();
-  const [services, setServices] = useState({});
-  const loadServices = async () => {
-    const service = await getServicesDetails(params.id);
-    setServices(service.service);
+  const [booking, setBooking] = useState([]);
+
+  const loadBooking = async () => {
+    const updateBooking = await fetch(
+      `http://localhost:3000/my-booking/api/booking/${params.id}`
+    );
+    const data = await updateBooking.json();
+    setBooking(data.data);
   };
 
-  const { title, description, img, price, facility, _id } = services;
-  const handleBooking = async (event) => {
-    event.preventDefault();
-    const newBooking = {
-      name: data?.user?.name,
-      email: data?.user?.email,
-      phone: event.target.phone.value,
-      address: event.target.address.value,
-      date: event.target.date.value,
-      serviceTitle: title,
-      serviceID: _id,
-      price: price,
-    };
-    const res = await fetch("http://localhost:3000/checkout/api/new-booking", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(newBooking),
-    });
-    const response = await res?.json();
-    toast.success(response?.message);
-    event.target.reset();
-  };
-
+  const handleUpdateBooking=async()=>{
+    event.preventDefault()
+    const updatedBooking={
+      date:event.target.date.value
+      phone:event.target.phone.value
+      address:event.target.address.value
+    }
+    const res= await fetch(
+      `http://localhost:3000/my-booking/api/booking/${params.id}`,{
+        method:'PATCH',
+        headers:{
+          'content-type':'application/json'
+        },
+        body:JSON.stringify(updatedBooking)
+      })
+      if(res.status===200){
+       toast.success('Updated Successfully')
+      }
+  }
   useEffect(() => {
-    loadServices();
+    loadBooking();
   }, [params]);
   return (
     <div className="min-h-screen max-w-7xl mx-auto">
       <div className="relative h-100">
         <Image
-          src={img}
+          src="/assets/images/checkout/checkout.png"
           width={1280}
           height={70}
           alt="service"
@@ -56,17 +52,17 @@ const CheckOut = ({ params }) => {
         />
 
         <h2 className="absolute text-4xl text-[#FF3811] font-bold top-1/2 ml-8 md:ml-24">
-          Details of {title}
+          Update
         </h2>
         <h2 className="absolute bg-[#FF3811] text-white text-base py-3 px-6 w-56 flex justify-center items-center left-1/2 bottom-0">
           <Link href="/">
             <span>Home </span>
           </Link>
-          <span> / Checkout</span>
+          <span> / Update</span>
         </h2>
       </div>
       <div className="my-12 p-12 bg-[#F3F3F3] rounded-lg">
-        <form onSubmit={handleBooking}>
+        <form onClick={handleUpdateBooking}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 ">
             <Input
               name="name"
@@ -86,7 +82,8 @@ const CheckOut = ({ params }) => {
             />
             <Input
               name="price"
-              defaultValue={price}
+              readOnly
+              defaultValue={booking.price}
               placeholder="Due Amount"
               variant="outlined"
               color="warning"
@@ -94,6 +91,7 @@ const CheckOut = ({ params }) => {
             />
             <Input
               name="phone"
+              defaultValue={booking.phone}
               placeholder="Phone"
               variant="outlined"
               color="warning"
@@ -101,6 +99,7 @@ const CheckOut = ({ params }) => {
             />
             <Input
               name="address"
+              defaultValue={booking.address}
               placeholder="Present Address"
               variant="outlined"
               color="warning"
@@ -108,7 +107,7 @@ const CheckOut = ({ params }) => {
             />
             <Input
               name="date"
-              defaultValue={new Date().getDate()}
+              defaultValue={booking.date}
               type="date"
               placeholder="Date"
               variant="outlined"
@@ -123,7 +122,7 @@ const CheckOut = ({ params }) => {
             color="red"
             className="mt-4 p-4"
           >
-            Order Confirm
+            Update Confirm
           </Button>
         </form>
       </div>
@@ -131,4 +130,4 @@ const CheckOut = ({ params }) => {
   );
 };
 
-export default CheckOut;
+export default UpdatePage;

@@ -61,6 +61,16 @@ const Nabvar = () => {
         color="black"
         className="p-1 font-normal"
       >
+        <Link href="/my-booking" className="flex items-center">
+          My Bookings
+        </Link>
+      </Typography>
+      <Typography
+        as="li"
+        variant="lg"
+        color="black"
+        className="p-1 font-normal"
+      >
         <Link href="/blog" className="flex items-center">
           Blog
         </Link>

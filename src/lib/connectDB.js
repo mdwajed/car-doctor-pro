@@ -13,9 +13,11 @@ export const connectDB = async () => {
         deprecationErrors: true,
       },
     });
+    await client.connect();
     db = client.db("car-doctor");
+    console.log("Connected to MongoDB");
     return db;
   } catch (error) {
-    console.log(error);
+    console.error("Error connecting to MongoDB:", error);
   }
 };

@@ -1,10 +1,11 @@
 import React from "react";
 import { Button } from "../../app/MTailwind";
-import ServiceCard from "../Cards/ServiceCard"
+import ServiceCard from "../Cards/ServiceCard";
 import { getServices } from "@/services/getServices";
 
 const Services = async () => {
-  const { services } = await getServices();
+  const { services}  = await getServices();
+  console.log(services)
   return (
     <div className="my-12 max-w-7xl mx-auto">
       <div className="text-center mb-8 space-y-4">

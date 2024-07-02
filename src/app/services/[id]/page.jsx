@@ -7,7 +7,7 @@ import { FaArrowRight } from "react-icons/fa";
 const page = async ({ params }) => {
   const service = await getServicesDetails(params.id);
 
-  console.log(service);
+  console.log(service.service);
   if (!service.service) {
     return (
       <div className="min-h-screen max-w-7xl mx-auto">
@@ -15,7 +15,7 @@ const page = async ({ params }) => {
       </div>
     );
   }
-  const { title, description, img, price, facility, _id } =service.service;
+  const { title, description, img, price, facility, _id } = service.service;
   console.log("Service details:", { title, description, img, price, facility });
   return (
     <div className="min-h-screen max-w-7xl mx-auto">
