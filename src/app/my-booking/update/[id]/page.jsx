@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import { Button } from "../../../MTailwind";
 import { Input } from "@mui/joy";
 import { useSession } from "next-auth/react";
-// import { toast } from "react-toastify";
+import { toast } from "react-toastify";
 const UpdatePage = ({ params }) => {
   const { data } = useSession();
   const [booking, setBooking] = useState([]);
@@ -15,28 +15,31 @@ const UpdatePage = ({ params }) => {
       `http://localhost:3000/my-booking/api/booking/${params.id}`
     );
     const data = await updateBooking.json();
+    console.log(data);
     setBooking(data.data);
   };
 
-  const handleUpdateBooking=async()=>{
-    event.preventDefault()
-    const updatedBooking={
-      date:event.target.date.value
-      phone:event.target.phone.value
-      address:event.target.address.value
-    }
-    const res= await fetch(
-      `http://localhost:3000/my-booking/api/booking/${params.id}`,{
-        method:'PATCH',
-        headers:{
-          'content-type':'application/json'
+  const handleUpdateBooking = async (event) => {
+    event.preventDefault();
+    const updatedBooking = {
+      date: event.target.date.value,
+      phone: event.target.phone.value,
+      address: event.target.address.value,
+    };
+    const res = await fetch(
+      `http://localhost:3000/my-booking/api/booking/${params.id}`,
+      {
+        method: "PATCH",
+        body: JSON.stringify(updatedBooking),
+        headers: {
+          "content-type": "application/json",
         },
-        body:JSON.stringify(updatedBooking)
-      })
-      if(res.status===200){
-       toast.success('Updated Successfully')
       }
-  }
+    );
+    if (res.status === 200) {
+      toast.success("Updated Successfully");
+    }
+  };
   useEffect(() => {
     loadBooking();
   }, [params]);
@@ -62,7 +65,7 @@ const UpdatePage = ({ params }) => {
         </h2>
       </div>
       <div className="my-12 p-12 bg-[#F3F3F3] rounded-lg">
-        <form onClick={handleUpdateBooking}>
+        <form onSubmit={handleUpdateBooking}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 ">
             <Input
               name="name"
